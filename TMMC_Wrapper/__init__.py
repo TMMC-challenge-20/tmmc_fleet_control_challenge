@@ -512,7 +512,7 @@ class Robot(Node):
         front_left_index = front_index + 90
 
         # define maximum distance threshold for obstacles
-        obstacle_dist = 0.7
+        obstacle_dist = 0.5
 
         # read lidar scan and extract data in angle range of interest
         data = scan[front_right_index:front_left_index + 1]
