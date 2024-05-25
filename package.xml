@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>TMMC_Wrapper</name>
+  <version>0.0.1</version>
+  <description>A python wrapper for the TMMC challenge using the turtlebot4 ROS2 api</description>
+  <maintainer email="robohub@uwaterloo.ca">Robo Hub</maintainer>
+  <license>MIT</license>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
