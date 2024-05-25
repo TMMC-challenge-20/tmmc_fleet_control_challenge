@@ -36,11 +36,13 @@ try:
 
         #Add looping functionality here
 
-        # # Keyboard control (level 1/2)
+        # # Keyboard control (level 1)
         start_keyboard_control(robot)
 
+        # # If robot gets too close to wall -> rotates backward, then moves backward
         if lidar_data_too_close(robot, scan, np.pi/4, 3(*np.pi)/4, 0.1)
-            move_backward(robot)
+            rotate(robot, 180, +1)
+            set_cmd_vel(robot, 0.5, 0, 1)
 
 except KeyboardInterrupt:
     print("keyboard interrupt receieved.Stopping...")
