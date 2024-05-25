@@ -8,7 +8,7 @@ import math
 if not rclpy.ok():
     rclpy.init()
 
-TMMC_Wrapper.is_SIM = True
+TMMC_Wrapper.is_SIM = False
 if not TMMC_Wrapper.is_SIM:
     #specify hardware api
     TMMC_Wrapper.use_hardware()

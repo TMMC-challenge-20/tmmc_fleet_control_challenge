@@ -5,23 +5,23 @@ import rclpy
 import numpy as np
 import math
 
-#Start ros with initializing the rclpy object
+#start ros
 if not rclpy.ok():
     rclpy.init()
 
-TMMC_Wrapper.is_SIM = True
+TMMC_Wrapper.is_SIM = False
 if not TMMC_Wrapper.is_SIM:
-    #Specify hardware api
+    #specify hardware api
     TMMC_Wrapper.use_hardware()
     
 if not "robot" in globals():
     robot = TMMC_Wrapper.Robot()
 
-#Debug messaging 
+#debug messaging 
 print("running main")
 
 #start processes
-#add starter functions here
+robot.start_keyboard_control()   #this one is just pure keyboard control
 
 #rclpy,spin_once is a function that updates the ros topics once
 rclpy.spin_once(robot, timeout_sec=0.5)
@@ -40,8 +40,8 @@ try:
         robot.start_keyboard_control()
 
         scan = robot.checkScan()
-
-        if robot.lidar_data_too_close(scan, np.pi/4, (3*np.pi)/4, 0.1) > 0.5:
+        obs_dist, obs_angle = robot.detect_obstacle(scan.ranges)
+        if (obs_dist < 1) and (obs_dist > 0):
             robot.move_backward()
         else: # # If not too close to wall
             robot.move_forward()
@@ -51,5 +51,6 @@ except KeyboardInterrupt:
 finally:
     #when exiting program, run the kill processes
     #add functionality to ending processes here
+    robot.stop_keyboard_control()
     robot.destroy_node()
     rclpy.shutdown()
