@@ -42,8 +42,10 @@ try:
         scan = robot.checkScan()
 
         # # If robot gets too close to wall -> moves backward
-        if robot.lidar_data_too_close(scan, np.pi/4, 3(*np.pi)/4, 0.1) > 0.5:
-            robot.move_backward()
+        if lidar_data_too_close(robot, scan, np.pi/4, 3(*np.pi)/4, 0.1) > 0.5:
+            move_backward(robot)
+        else: # # If not too close to wall
+            move_forward(robot)
 
 except KeyboardInterrupt:
     print("keyboard interrupt receieved.Stopping...")
