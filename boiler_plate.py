@@ -35,7 +35,13 @@ try:
         rclpy.spin_once(robot, timeout_sec=0.1)
 
         #Add looping functionality here
-        
+
+        # # Keyboard control (level 1/2)
+        start_keyboard_control(robot)
+
+        if lidar_data_too_close(robot, scan, np.pi/4, 3(*np.pi)/4, 0.1)
+            move_backward(robot)
+
 except KeyboardInterrupt:
     print("keyboard interrupt receieved.Stopping...")
 finally:
