@@ -24,7 +24,7 @@ print("running main")
 #add starter functions here
 
 #rclpy,spin_once is a function that updates the ros topics once
-rclpy.spin_once(robot, timeout_sec=0.1)
+rclpy.spin_once(robot, timeout_sec=0.5)
 
 #run control functions on loop
 try:
@@ -32,7 +32,7 @@ try:
     while True:
 
         #rclpy,spin_once is a function that updates the ros topics once
-        rclpy.spin_once(robot, timeout_sec=0.1)
+        rclpy.spin_once(robot, timeout_sec=0.5)
 
         #Add looping functionality here
 
