@@ -40,7 +40,7 @@ try:
         start_keyboard_control(robot)
 
         # # If robot gets too close to wall -> moves backward
-        if lidar_data_too_close(robot, scan, np.pi/4, 3(*np.pi)/4, 0.1):
+        if lidar_data_too_close(robot, scan, np.pi/4, 3(*np.pi)/4, 0.1) > 0.5:
             move_backward(robot)
 
 except KeyboardInterrupt:
