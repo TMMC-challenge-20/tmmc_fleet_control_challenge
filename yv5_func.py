@@ -99,7 +99,7 @@ def detect_stop_sign(video_path, is_cuda=False):
             yield 0
 
 stop_counter = 0
-for result in detect_stop_sign("stop.mp4", True):
+for result in detect_stop_sign(0, True):
     if result == 1:
         stop_counter += 1
     else:
