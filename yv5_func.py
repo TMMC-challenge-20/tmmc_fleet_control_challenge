@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def detect_stop_sign(video_path, is_cuda=False):
+def detect_stop_sign(frame, is_cuda=False):
 
     def build_model(is_cuda):
         net = cv2.dnn.readNet("stopsign_simplified.onnx")
@@ -81,30 +81,26 @@ def detect_stop_sign(video_path, is_cuda=False):
         return result
 
     net = build_model(is_cuda)
-    capture = cv2.VideoCapture(video_path)
 
-    while True:
-        _, frame = capture.read()
-        if frame is None:
-            break
+    inputImage = format_yolov5(frame)
+    outs = detect(inputImage, net)
 
-        inputImage = format_yolov5(frame)
-        outs = detect(inputImage, net)
+    class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])
 
-        class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])
+    # Draw bounding boxes and labels on the frame
+    for class_id, confidence, box in zip(class_ids, confidences, boxes):
+        label = f"{class_list[class_id]}: {confidence:.2f}"
+        cv2.rectangle(frame, (box[0], box[1]), (box[0]+box[2], box[1]+box[3]), (0, 255, 0), 2)
+        cv2.putText(frame, label, (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-        if len(class_ids) > 0:
-            yield 1
-        else:
-            yield 0
+    # Display the frame
+    cv2.imshow("Frame", frame)
 
-stop_counter = 0
-for result in detect_stop_sign(0, True):
-    if result == 1:
-        stop_counter += 1
+    # Break the loop if 'q' is pressed
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        return None
+
+    if len(class_ids) > 0:
+        return 1
     else:
-        stop_counter = 0
-
-    if stop_counter == 3:
-        print('STOP')
-        break
+        return 0

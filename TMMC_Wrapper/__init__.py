@@ -39,6 +39,8 @@ import apriltag
 import numpy as numpy
 import matplotlib.pyplot as plt
 
+from yv5_func import detect_stop_sign
+
 #---constants---
 CONST_speed_control = 1 #set this to 1 for full speed, 0.5 for half speed
 DEBUG = False #set to false to disable terminal printing of some functions
@@ -298,6 +300,15 @@ class Robot(Node):
         cv2.imshow("image", img_3D)
         cv2.waitKey(10)
         
+    def checkStopSignInImage(self): #this one returns an actual image instead of all the data
+        image = self.checkImage()
+        height = image.height
+        width = image.width
+        img_data = image.data
+        img_3D = np.reshape(img_data, (height, width, 3))
+        signCount = detect_stop_sign(img_3D)
+        return signCount
+        
 #-----camera listeners and grabbers-----  
     def camera_info_listener_callback(self, msg):
         self.last_camera_info_msg = msg
@@ -470,6 +481,9 @@ class Robot(Node):
     
     def move_backward(self):
         self.send_cmd_vel(-1.0*CONST_speed_control, 0.0)
+
+    def stop(self):
+        self.send_cmd_vel(0.0, 0.0)
     
     def turn_left(self):
         self.send_cmd_vel(0.0, 1.0*CONST_speed_control)
